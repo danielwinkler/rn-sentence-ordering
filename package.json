@@ -3,21 +3,35 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
+    "clean:android": "cd android && ./gradlew clean && cd ..",
+    "clean:ios": "rm -rf ./ios/build/* && rm -rf $TMPDIR/react-* && watchman watch-del-all && yarn cache clean",
     "android": "react-native run-android",
     "ios": "react-native run-ios",
+    "start:clean": "watchman watch-del-all && react-native start --reset-cache",
     "start": "react-native start",
     "test": "jest",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx"
   },
   "dependencies": {
+    "@fortawesome/fontawesome-svg-core": "^1.2.32",
+    "@fortawesome/free-regular-svg-icons": "^5.15.1",
+    "@fortawesome/free-solid-svg-icons": "^5.15.1",
+    "@fortawesome/react-native-fontawesome": "^0.2.6",
+    "lodash": "^4.17.20",
     "react": "16.13.1",
-    "react-native": "0.63.3"
+    "react-native": "0.63.4",
+    "react-native-gesture-handler": "^1.9.0",
+    "react-native-reanimated": "2.0.0-rc.0",
+    "react-native-redash": "^15.11.1",
+    "react-native-safe-area-context": "^3.1.9",
+    "react-native-svg": "^12.1.0"
   },
   "devDependencies": {
     "@babel/core": "^7.8.4",
     "@babel/runtime": "^7.8.4",
     "@react-native-community/eslint-config": "^1.1.0",
     "@types/jest": "^25.2.3",
+    "@types/lodash": "^4.14.165",
     "@types/react-native": "^0.63.2",
     "@types/react-test-renderer": "^16.9.2",
     "@typescript-eslint/eslint-plugin": "^2.27.0",
