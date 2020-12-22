@@ -7,6 +7,7 @@ export const WINDOW_HEIGHT = height;
 export const MARBLE_SIZE = 40;
 export const MARBLE_MARGIN = 4;
 export const MARGIN_LEFT = 12;
+export const BOTTOM_SHEET_PAD = 18;
 
 export const dropShadow: ViewStyle = Platform.select({
   ios: {
@@ -29,6 +30,7 @@ export const styles = StyleSheet.create({
     borderTopColor: colors.black_light,
     borderTopWidth: 1,
     justifyContent: 'flex-start',
+    paddingTop: BOTTOM_SHEET_PAD,
   },
   sentenceText: {flex: 1, flexWrap: 'wrap', marginLeft: 17},
   marbleContainer: {

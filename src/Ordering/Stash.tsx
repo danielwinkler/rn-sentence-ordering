@@ -5,9 +5,12 @@ import {View, StyleSheet} from 'react-native';
 import Animated, {useSharedValue, useAnimatedReaction} from 'react-native-reanimated';
 import {between} from 'react-native-redash';
 import {findIndex} from '../util';
+import {labels} from './data';
 
-import Label, {LabelModes} from './Label';
+import Label, {BANK_ZINDEX, LabelModes} from './Label';
 import {Layout} from './Layout';
+import Placeholder from './Placeholder';
+import {WINDOW_HEIGHT, WINDOW_WIDTH, styles as sharedstyles} from './styles';
 
 export interface StashProps {
   children: ReactElement<{id: number}>[];
@@ -54,9 +57,24 @@ const Stash = ({children, activeIndex, layout, scrollY, onSelected}: StashProps)
           {child}
         </Label>
       ))}
+      <View style={[sharedstyles.dropShadow, sharedstyles.bottomSheet, styles.bank, {top: layout.bankTop.value}]}>
+        <View style={sharedstyles.marbleContainer}>
+          {labels.map((label, index) => (
+            <Placeholder key={index.toString()} style={sharedstyles.placeholder} text={label} />
+          ))}
+        </View>
+      </View>
     </View>
   );
 };
 
 export default Stash;
-const styles = StyleSheet.create({container: {position: 'absolute', top: 0, left: 0}});
+const styles = StyleSheet.create({
+  container: {position: 'absolute', top: 0, left: 0},
+  bank: {
+    position: 'absolute',
+    zIndex: BANK_ZINDEX,
+    height: WINDOW_HEIGHT,
+    width: WINDOW_WIDTH,
+  },
+});

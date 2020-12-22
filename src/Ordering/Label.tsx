@@ -18,9 +18,10 @@ const ANIM_CFG: Animated.WithTimingConfig = {duration: 450};
 /// values also used as zIndex
 export enum LabelModes {
   LIST = 1,
-  BANK,
+  BANK = 3,
   ACTIVE,
 }
+export const BANK_ZINDEX = 2; // higher than list , lower than bank labels
 
 interface LabelProps {
   layout: StashProps['layout'];
@@ -127,14 +128,9 @@ const Label = ({layout, assignments, index, children, dragPosition, activeIndex,
       }
     }
   });
-  const visible = useDerivedValue(() => {
-    if (mode.value !== LabelModes.LIST) return true;
-    return assignments.y[index].value + MARBLE_SIZE - scrollY.value < layout.bankTop.value;
-  });
   const style = useAnimatedStyle(() => {
     return {
       position: 'absolute',
-      opacity: visible.value ? 1 : 0,
       top: 0,
       left: 0,
       zIndex: assignments.mode[index].value,

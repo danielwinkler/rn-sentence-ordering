@@ -5,7 +5,7 @@ import {useVector, Vector} from 'react-native-redash';
 import {isDefined, some} from '../util';
 
 import {SharedValues} from '../types';
-import {MARBLE_MARGIN} from './styles';
+import {BOTTOM_SHEET_PAD, MARBLE_MARGIN} from './styles';
 
 export type Layout = {
   sentencePositions: Vector<Animated.SharedValue<number>>[];
@@ -71,7 +71,7 @@ export const computeLayout = (measurements: Measurements): Layout => {
 
     const bankOffset = measurements.bankTop!;
     const bankPositions = measurements.bankTargets.map((layout) =>
-      useVector(layout!.x + MARBLE_MARGIN, layout!.y + bankOffset + MARBLE_MARGIN),
+      useVector(layout!.x + MARBLE_MARGIN, layout!.y + bankOffset + BOTTOM_SHEET_PAD + MARBLE_MARGIN),
     );
     const sentenceBounds = measurements.sentences.map((layout) => ({
       top: useSharedValue(layout!.y),

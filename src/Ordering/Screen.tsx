@@ -85,7 +85,7 @@ const Screen = () => {
         ))}
       </Animated.ScrollView>
 
-      <View style={[styles.dropShadow, styles.bottomSheet]} onLayout={onLayoutTheBank}>
+      <View style={[styles.bottomSheet]} onLayout={onLayoutTheBank}>
         <View style={styles.marbleContainer}>
           {labels.map((label, index) => (
             <View key={index.toString()} onLayout={onLayoutInBank(index)}>
