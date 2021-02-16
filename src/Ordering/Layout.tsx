@@ -50,34 +50,37 @@ export const isComputed = (layout: Layout, success: () => void) => {
 
 export const computeLayout = (measurements: Measurements): Layout => {
   console.log('getLayout');
+  const layout = {
+    topInset: useSharedValue(INIT_VALUE),
+    bankTop: useSharedValue(INIT_VALUE),
+    sentenceBounds: measurements.sentences.map(() => ({
+      top: useSharedValue(INIT_VALUE),
+      bottom: useSharedValue(INIT_VALUE),
+    })),
+    bankPositions: measurements.bankTargets.map(() => useVector(INIT_VALUE, INIT_VALUE)),
+    sentencePositions: measurements.sentences.map(() => useVector(INIT_VALUE, INIT_VALUE)),
+  };
   if (!isMeasured(measurements)) {
-    return {
-      topInset: useSharedValue(INIT_VALUE),
-      bankTop: useSharedValue(INIT_VALUE),
-      sentenceBounds: measurements.sentences.map(() => ({
-        top: useSharedValue(INIT_VALUE),
-        bottom: useSharedValue(INIT_VALUE),
-      })),
-      bankPositions: measurements.bankTargets.map(() => useVector(INIT_VALUE, INIT_VALUE)),
-      sentencePositions: measurements.sentences.map(() => useVector(INIT_VALUE, INIT_VALUE)),
-    };
+    return layout;
   } else {
-    const topInset = useSharedValue(measurements.topInset ?? 0);
-    const bankTop = useSharedValue(measurements.bankTop ?? 0);
+    layout.topInset.value = measurements.topInset ?? 0;
+    layout.bankTop.value = measurements.bankTop ?? 0;
 
-    const sentencePositions = zip(measurements.sentences, measurements.sentenceTargets).map(([container, target]) =>
-      useVector(container!.x + target!.x, container!.y + target!.y),
-    );
+    zip(measurements.sentences, measurements.sentenceTargets).forEach(([container, target], idx) => {
+      layout.sentencePositions[idx].x.value = container!.x + target!.x;
+      layout.sentencePositions[idx].y.value = container!.y + target!.y;
+    });
 
     const bankOffset = measurements.bankTop!;
-    const bankPositions = measurements.bankTargets.map((layout) =>
-      useVector(layout!.x + MARBLE_MARGIN, layout!.y + bankOffset + BOTTOM_SHEET_PAD + MARBLE_MARGIN),
-    );
-    const sentenceBounds = measurements.sentences.map((layout) => ({
-      top: useSharedValue(layout!.y),
-      bottom: useSharedValue(layout!.y + layout!.height),
-    }));
+    measurements.bankTargets.forEach((m, idx) => {
+      layout.bankPositions[idx].x.value = m!.x + MARBLE_MARGIN;
+      layout.bankPositions[idx].y.value = m!.y + bankOffset + BOTTOM_SHEET_PAD + MARBLE_MARGIN;
+    });
+    measurements.sentences.forEach((m, idx) => {
+      layout.sentenceBounds[idx].top.value = m!.y;
+      layout.sentenceBounds[idx].bottom.value = m!.y + m!.height;
+    });
 
-    return {sentenceBounds, sentencePositions, bankPositions, topInset, bankTop};
+    return layout;
   }
 };
